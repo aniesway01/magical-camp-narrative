@@ -22,6 +22,11 @@
   --tag-text: #5db8b8;
   --success: #4ade80;
   --radius: 10px;
+  --bubble-npc: #1e2a3a;
+  --bubble-mc: #2a1e3a;
+  --bubble-narrator: #1a1a2e;
+  --speaker-npc: #60a5fa;
+  --speaker-mc: #c084fc;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -50,121 +55,47 @@ body {
   background: radial-gradient(ellipse at 80% 50%, var(--accent-glow), transparent 70%);
   pointer-events: none;
 }
-.game-banner h1 {
-  font-size: 26px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 1px;
-  margin-bottom: 2px;
-}
-.game-banner .subtitle {
-  font-size: 13px;
-  color: rgba(255,255,255,0.45);
-  font-style: italic;
-  margin-bottom: 8px;
-}
-.game-banner .banner-stats {
-  display: flex;
-  gap: 16px;
-  font-size: 12px;
-  color: rgba(255,255,255,0.55);
-}
-.game-banner .banner-stats .stat-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
+.game-banner h1 { font-size: 26px; font-weight: 700; color: #fff; letter-spacing: 1px; margin-bottom: 2px; }
+.game-banner .subtitle { font-size: 13px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 8px; }
+.game-banner .banner-stats { display: flex; gap: 16px; font-size: 12px; color: rgba(255,255,255,0.55); }
+.game-banner .banner-stats .stat-item { display: flex; align-items: center; gap: 5px; }
 .game-banner .banner-stats b { color: var(--accent); }
 .translation-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 600;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;
 }
-.translation-badge.full {
-  background: rgba(74,222,128,0.15);
-  color: var(--success);
-}
-.translation-badge.partial {
-  background: rgba(251,191,36,0.15);
-  color: #fbbf24;
-}
+.translation-badge.full { background: rgba(74,222,128,0.15); color: var(--success); }
+.translation-badge.partial { background: rgba(251,191,36,0.15); color: #fbbf24; }
 
 /* === Toolbar === */
 .toolbar {
   background: var(--bg2);
   border-bottom: 1px solid var(--border);
   padding: 8px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
 .search-box {
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 13px;
-  width: 220px;
-  flex-shrink: 1;
-  min-width: 140px;
+  padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font-size: 13px;
+  width: 220px; flex-shrink: 1; min-width: 140px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.search-box:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
+.search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 .search-box::placeholder { color: var(--text3); }
-.toolbar-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.toggle-row {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  color: var(--text2);
-  cursor: pointer;
-  white-space: nowrap;
-  user-select: none;
-}
+.toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.toggle-row { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); cursor: pointer; white-space: nowrap; user-select: none; }
 .toggle-row input { accent-color: var(--accent); cursor: pointer; }
 .toggle-row:hover { color: var(--text); }
 .view-toggle { display: flex; gap: 4px; }
 .view-btn {
-  padding: 5px 14px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text2);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
+  padding: 5px 14px; border-radius: 6px; border: 1px solid var(--border);
+  background: transparent; color: var(--text2); font-size: 12px; cursor: pointer; transition: all 0.2s;
 }
 .view-btn:hover { background: var(--bg3); color: var(--text); }
-.view-btn.active {
-  background: var(--accent2);
-  color: #fff;
-  border-color: var(--accent2);
-  box-shadow: 0 2px 8px rgba(83,52,131,0.3);
-}
+.view-btn.active { background: var(--accent2); color: #fff; border-color: var(--accent2); box-shadow: 0 2px 8px rgba(83,52,131,0.3); }
 
 /* === Content Area === */
-.content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 20px 40px;
-  scroll-behavior: smooth;
-}
+.content { flex: 1; overflow-y: auto; padding: 16px 20px 40px; scroll-behavior: smooth; }
 
 /* === Group Headers === */
 .group-header {
@@ -173,177 +104,192 @@ body {
   padding: 14px 20px;
   margin: 20px 0 6px 0;
   border-radius: var(--radius);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  position: sticky; top: 0; z-index: 10;
+  cursor: pointer; user-select: none;
+  display: flex; align-items: center; gap: 12px;
   transition: transform 0.1s;
   box-shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
 .group-header:first-child { margin-top: 0; }
 .group-header:active { transform: scale(0.995); }
-.group-arrow {
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
-  transition: transform 0.2s;
-  flex-shrink: 0;
-}
+.group-arrow { font-size: 12px; color: rgba(255,255,255,0.4); transition: transform 0.2s; flex-shrink: 0; }
 .group-arrow.open { transform: rotate(90deg); }
 .group-info { flex: 1; min-width: 0; }
-.group-header h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-  margin: 0;
-  border: none;
-  padding: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.group-header .group-name-en {
-  font-size: 11px;
-  color: rgba(255,255,255,0.35);
-  font-style: italic;
-  margin-top: 1px;
-}
-.group-header .group-stats {
-  font-size: 12px;
-  color: rgba(255,255,255,0.45);
-  flex-shrink: 0;
-}
+.group-header h2 { font-size: 18px; font-weight: 600; color: #fff; margin: 0; border: none; padding: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.group-header .group-name-en { font-size: 11px; color: rgba(255,255,255,0.35); font-style: italic; margin-top: 1px; }
+.group-header .group-stats { font-size: 12px; color: rgba(255,255,255,0.45); flex-shrink: 0; }
 .group-header .group-stats b { color: var(--accent); }
-
-/* === Group Body === */
-.group-body {
-  display: none;
-  padding: 2px 0;
-}
+.group-body { display: none; padding: 2px 0; }
 .group-body.open { display: block; }
 
-/* === Passage Cards === */
-.passage {
-  background: var(--card);
-  padding: 14px 18px;
-  margin: 5px 0;
-  border-radius: 8px;
-  border-left: 3px solid transparent;
-  transition: border-color 0.2s, background 0.15s;
-  position: relative;
-}
-.passage:hover {
-  border-left-color: var(--accent);
-  background: var(--card-hover);
-}
-.passage-header {
+/* === Dialogue Bubble UI === */
+.msg {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: 10px;
+  padding: 6px 12px;
+  margin: 3px 0;
+  align-items: flex-start;
+  max-width: 85%;
+  animation: fadeIn 0.15s ease;
 }
-.passage-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent);
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.passage .pid {
-  font-size: 10px;
-  color: var(--text3);
-  font-family: 'Consolas', monospace;
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.msg.npc { flex-direction: row; margin-right: auto; }
+.msg.mc { flex-direction: row-reverse; margin-left: auto; }
+.msg.narrator { max-width: 70%; margin: 8px auto; justify-content: center; }
+
+/* Portrait */
+.msg-portrait {
+  width: 52px; height: 52px;
+  border-radius: 50%;
   flex-shrink: 0;
+  border: 2px solid var(--border);
+  background: var(--bg3);
+  object-fit: cover;
+  image-rendering: pixelated;
 }
-.passage .pname {
+.msg.mc .msg-portrait { border-color: var(--speaker-mc); }
+.msg.npc .msg-portrait { border-color: var(--speaker-npc); }
+
+/* Bubble */
+.msg-bubble {
+  background: var(--bubble-npc);
+  border-radius: 14px;
+  padding: 8px 14px;
+  position: relative;
+  min-width: 60px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.msg.mc .msg-bubble { background: var(--bubble-mc); }
+.msg.narrator .msg-bubble {
+  background: var(--bubble-narrator);
+  border: 1px dashed var(--border);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Speaker Name */
+.msg-speaker {
   font-size: 11px;
-  color: var(--tag-text);
-  margin-bottom: 4px;
-  font-family: monospace;
+  font-weight: 700;
+  margin-bottom: 2px;
+  letter-spacing: 0.3px;
 }
-.passage .text {
+.msg.npc .msg-speaker { color: var(--speaker-npc); }
+.msg.mc .msg-speaker { color: var(--speaker-mc); }
+
+/* Message Text */
+.msg-text {
   font-size: 14.5px;
-  line-height: 1.85;
+  line-height: 1.75;
   color: var(--text);
   white-space: pre-wrap;
   word-break: break-word;
 }
-.passage-img {
-  max-width: 100%;
-  max-height: 400px;
-  border-radius: 8px;
-  margin: 8px 0;
-  display: block;
-}
-.passage .text-en {
-  font-size: 12px;
+.msg-text-en {
+  font-size: 11.5px;
   color: var(--text2);
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed var(--border);
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(255,255,255,0.08);
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1.5;
   white-space: pre-wrap;
-  max-height: 150px;
-  overflow: hidden;
-  position: relative;
-}
-.passage .text-en.collapsed::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 40px;
-  background: linear-gradient(transparent, var(--card));
-  pointer-events: none;
-}
-.passage .tag-row { margin-bottom: 6px; }
-.passage .tag {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 10px;
-  background: var(--tag-bg);
-  color: var(--tag-text);
-  font-size: 11px;
-  margin-right: 4px;
-  margin-bottom: 2px;
-}
-.passage-num {
-  font-size: 10px;
-  color: var(--text3);
-  font-family: monospace;
-  position: absolute;
-  top: 14px;
-  right: 16px;
 }
 
-/* === Empty / Loading States === */
-.loading {
+/* CG Image */
+.msg-cg {
+  margin: 8px 0;
   text-align: center;
-  padding: 80px 20px;
-  color: var(--text2);
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
-.loading .spinner {
+.msg-cg img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 1px solid var(--border);
+}
+.msg-cg img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+.msg-cg-label {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* Choice */
+.msg-choice {
+  margin: 6px 12px;
+  padding: 8px 14px;
+  background: var(--bg3);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  max-width: 85%;
+}
+.msg-choice-label {
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.msg-choice-item {
   display: inline-block;
-  width: 36px; height: 36px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-bottom: 16px;
+  padding: 3px 12px;
+  margin: 2px 4px 2px 0;
+  border-radius: 16px;
+  background: rgba(96,165,250,0.12);
+  color: var(--speaker-npc);
+  font-size: 13px;
+  border: 1px solid rgba(96,165,250,0.2);
+}
+
+/* PID overlay */
+.msg-pid {
+  font-size: 9px;
+  color: var(--text3);
+  font-family: 'Consolas', monospace;
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.msg:hover .msg-pid,
+.msg-cg:hover .msg-pid { opacity: 1; }
+
+/* === CG Lightbox === */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 95vw;
+  max-height: 95vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+/* === Loading / Empty === */
+.loading { text-align: center; padding: 80px 20px; color: var(--text2); }
+.loading .spinner {
+  display: inline-block; width: 36px; height: 36px;
+  border: 3px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text2);
-  font-size: 14px;
-}
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text2); font-size: 14px; }
 
 /* === Scrollbar === */
 ::-webkit-scrollbar { width: 6px; }
@@ -355,14 +301,18 @@ body {
 @media (max-width: 768px) {
   .game-banner { padding: 16px; }
   .game-banner h1 { font-size: 22px; }
-  .content { padding: 12px; }
-  .passage .text { font-size: 15px; line-height: 1.9; }
+  .content { padding: 10px 8px 40px; }
+  .msg { max-width: 95%; padding: 4px 6px; }
+  .msg.narrator { max-width: 90%; }
+  .msg-portrait { width: 40px; height: 40px; }
+  .msg-text { font-size: 14px; }
   .toolbar { padding: 6px 10px; gap: 6px; }
   .search-box { width: 100%; }
   .toolbar-right { margin-left: 0; width: 100%; flex-wrap: wrap; justify-content: center; }
   .view-toggle { width: 100%; justify-content: center; }
   .group-header { padding: 12px 14px; }
   .group-header h2 { font-size: 16px; }
+  .msg-cg img { max-height: 200px; }
 }
 </style>
 </head>
@@ -377,7 +327,7 @@ body {
 
   <!-- Toolbar -->
   <div class="toolbar">
-    <input type="text" class="search-box" id="searchBox" placeholder="搜尋段落內容...">
+    <input type="text" class="search-box" id="searchBox" placeholder="搜尋對話內容或角色名...">
     <div class="toolbar-right">
       <label class="toggle-row">
         <input type="checkbox" id="showZh" checked>
@@ -392,8 +342,8 @@ body {
         <span>段落 ID</span>
       </label>
       <div class="view-toggle">
-        <button class="view-btn active" data-view="group" id="viewGroup">按分類</button>
-        <button class="view-btn" data-view="all" id="viewAll">全部段落</button>
+        <button class="view-btn active" data-view="group" id="viewGroup">按場景</button>
+        <button class="view-btn" data-view="all" id="viewAll">全部對話</button>
       </div>
     </div>
   </div>
@@ -407,9 +357,25 @@ body {
   </div>
 </div>
 
+<!-- CG Lightbox -->
+<div class="lightbox" id="lightbox">
+  <img id="lightboxImg" src="" alt="">
+</div>
+
 <script>
 // === Config (injected by build script) ===
-const GAME_CONFIG = {"title": "Magical Camp", "title_zh": "魔法營地", "color_accent": "#a855f7"};
+const GAME_CONFIG = {"title": "Magical Camp", "title_zh": "魔法營地", "color_accent": "#a855f7", "engine": "rpgmaker"};
+
+// Protagonist detection: names and face patterns that indicate MC
+const MC_NAMES = new Set(['erica', 'eric', '\\v[1]', 'you', '你']);
+const MC_FACE_PATTERNS = ['MC2', 'MC3', 'mc2', 'mc3'];
+
+function isMC(p) {
+  const name = (p.speaker_name || '').toLowerCase();
+  if (MC_NAMES.has(name)) return true;
+  const face = p.portrait || '';
+  return MC_FACE_PATTERNS.some(pat => face.includes(pat));
+}
 
 // === State ===
 let DATA = null;
@@ -443,16 +409,17 @@ function renderBanner() {
   document.title = titleZh + ' — 互動敘事地圖';
 
   const total = m.total || DATA.passages.length;
-  const zhCount = m.translated_count || DATA.passages.filter(p => p.content_zh).length;
+  const dialogues = DATA.passages.filter(p => p.type !== 'picture' && p.type !== 'choice').length;
+  const zhCount = DATA.passages.filter(p => p.content_zh).length;
   const groupCount = (DATA.groups || []).length;
-  const pct = total > 0 ? Math.round(zhCount / total * 100) : 0;
+  const pct = dialogues > 0 ? Math.round(zhCount / dialogues * 100) : 0;
 
   let badgeClass = pct >= 95 ? 'full' : 'partial';
-  let badgeText = pct >= 95 ? '✓ 翻譯完成' : `${pct}% 已翻譯`;
+  let badgeText = pct >= 95 ? '\u2713 翻譯完成' : `${pct}% 已翻譯`;
 
   document.getElementById('bannerStats').innerHTML = `
-    <span class="stat-item"><b>${groupCount}</b> 分類</span>
-    <span class="stat-item"><b>${total}</b> 段落</span>
+    <span class="stat-item"><b>${groupCount}</b> 場景</span>
+    <span class="stat-item"><b>${dialogues}</b> 對話</span>
     <span class="translation-badge ${badgeClass}">${badgeText}</span>
   `;
 }
@@ -465,93 +432,104 @@ function getFiltered() {
     passages = passages.filter(p =>
       (p.content_zh || '').toLowerCase().includes(q) ||
       (p.content || '').toLowerCase().includes(q) ||
-      (p.name || '').toLowerCase().includes(q) ||
-      (p.group || '').toLowerCase().includes(q) ||
-      (p.group_zh || '').includes(q)
+      (p.speaker_name || '').toLowerCase().includes(q) ||
+      (p.group || '').toLowerCase().includes(q)
     );
   }
   return passages;
 }
 
-// === Auto Title ===
-function getPassageTitle(p) {
-  // If passage has a meaningful title (not just an ID like "g7" or "passage_12")
-  const name = p.name || '';
-  if (name && !/^(g\d|passage_|p\d|#|\d+$)/.test(name) && name.length > 2 && name.length < 80) {
-    return name;
-  }
-  // Extract first sentence from Chinese content
-  if (p.content_zh) {
-    const first = p.content_zh.split(/[。！？\n]/)[0];
-    if (first && first.length > 4) {
-      return first.length > 60 ? first.substring(0, 57) + '...' : first;
-    }
-  }
-  // Extract from English content
-  if (p.content) {
-    const first = p.content.split(/[.!?\n]/)[0];
-    if (first && first.length > 4) {
-      return first.length > 60 ? first.substring(0, 57) + '...' : first;
-    }
-  }
-  return name || `段落 ${p.pid}`;
-}
+// === Passage HTML (Dialogue Bubble) ===
+function passageHtml(p) {
+  const type = p.type || 'dialogue';
 
-// === Passage HTML ===
-function passageHtml(p, idx) {
-  const title = getPassageTitle(p);
-  const pid = p.pid != null ? `<span class="pid">#${p.pid}</span>` : '';
-  const pname = showName && p.name ? `<div class="pname">${escHtml(p.name)}</div>` : '';
-  const tags = (p.tags && p.tags.length > 0)
-    ? `<div class="tag-row">${p.tags.map(t => `<span class="tag">${escHtml(t)}</span>`).join('')}</div>`
-    : '';
+  // CG Image
+  if (type === 'picture') {
+    const cgName = p.cg_name || '';
+    const src = `images/cgs/${cgName}.webp`;
+    return `<div class="msg-cg" style="position:relative">
+      <img src="${src}" loading="lazy" alt="${escHtml(cgName)}"
+           onerror="this.parentElement.style.display='none'"
+           onclick="openLightbox('${src}')">
+      ${showName ? `<div class="msg-pid">#${p.pid}</div>` : ''}
+    </div>`;
+  }
+
+  // Choice
+  if (type === 'choice') {
+    const choices = p.choices || p.content.split('\n');
+    const items = (Array.isArray(choices) ? choices : [choices])
+      .map(c => `<span class="msg-choice-item">${escHtml(String(c))}</span>`).join('');
+    return `<div class="msg-choice">
+      <div class="msg-choice-label">&#9654; 選項</div>
+      ${items}
+    </div>`;
+  }
+
+  // Dialogue
+  const speaker = p.speaker_name || '';
+  const mc = isMC(p);
+  const hasPortrait = !!p.portrait;
+  const align = speaker ? (mc ? 'mc' : 'npc') : 'narrator';
+
+  const portraitHtml = hasPortrait
+    ? `<img class="msg-portrait" src="${p.portrait}" alt="${escHtml(speaker)}" loading="lazy" onerror="this.style.display='none'">`
+    : (speaker ? `<div class="msg-portrait" style="display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3)">${speaker.charAt(0)}</div>` : '');
+
+  const speakerHtml = speaker ? `<div class="msg-speaker">${escHtml(speaker)}</div>` : '';
 
   let textHtml = '';
   if (showZh && p.content_zh) {
-    textHtml += `<div class="text">${formatText(p.content_zh)}</div>`;
-  }
-  if (showEn && p.content) {
-    if (showZh && p.content_zh) {
-      const isLong = p.content.length > 300;
-      textHtml += `<div class="text-en${isLong ? ' collapsed' : ''}">${formatText(p.content)}</div>`;
-    } else {
-      textHtml += `<div class="text">${formatText(p.content)}</div>`;
+    textHtml += `<div class="msg-text">${formatText(p.content_zh)}</div>`;
+    if (showEn && p.content) {
+      textHtml += `<div class="msg-text-en">${formatText(p.content)}</div>`;
     }
-  }
-  if (!textHtml) {
-    if (p.content_zh) {
-      textHtml = `<div class="text">${formatText(p.content_zh)}</div>`;
-    } else if (p.content) {
-      textHtml = `<div class="text">${formatText(p.content)}</div>`;
-    } else {
-      textHtml = `<div class="text" style="color:var(--text3)">（無內容）</div>`;
-    }
+  } else if (p.content) {
+    textHtml += `<div class="msg-text">${formatText(p.content)}</div>`;
+  } else if (p.content_zh) {
+    textHtml += `<div class="msg-text">${formatText(p.content_zh)}</div>`;
   }
 
-  return `<div class="passage">
-    <div class="passage-header">
-      <span class="passage-title">${escHtml(title)}</span>
-      ${pid}
+  const pidHtml = showName ? `<span class="msg-pid">#${p.pid}</span>` : '';
+
+  return `<div class="msg ${align}">
+    ${portraitHtml}
+    <div class="msg-bubble">
+      ${speakerHtml}${textHtml}${pidHtml}
     </div>
-    ${pname}${tags}${textHtml}
   </div>`;
 }
 
 function formatText(s) {
   if (!s) return '';
-  // Escape HTML, then convert \n to <br> for proper line breaks
   let html = escHtml(s);
-  // Convert ![img](url) to <img> tags (after escHtml so we need to match escaped form)
-  html = html.replace(/!\[img\]\(([^)]+)\)/g, '<img src="$1" class="passage-img" loading="lazy" alt="">');
-  // Convert double newlines to paragraph breaks, single to <br>
-  html = html.replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br>');
-  return '<p>' + html + '</p>';
+  // Convert ![cg](url) to inline image
+  html = html.replace(/!\[cg\]\(([^)]+)\)/g, '<img src="$1" style="max-width:100%;border-radius:8px;cursor:pointer" loading="lazy" onclick="openLightbox(\'$1\')" alt="">');
+  html = html.replace(/\n/g, '<br>');
+  return html;
 }
 
 function escHtml(s) {
   if (!s) return '';
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+
+// === Lightbox ===
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightboxImg').src = src;
+  lb.classList.add('active');
+}
+document.getElementById('lightbox').addEventListener('click', function() {
+  this.classList.remove('active');
+  document.getElementById('lightboxImg').src = '';
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('lightbox').classList.remove('active');
+    document.getElementById('lightboxImg').src = '';
+  }
+});
 
 // === Group View ===
 function renderGroupView(passages) {
@@ -564,25 +542,22 @@ function renderGroupView(passages) {
     return;
   }
 
-  let total = 0;
   groups.forEach(([gName, gPassages]) => {
-    total += gPassages.length;
     const isOpen = openGroups.has(gName);
-
-    // Find group info
     const gInfo = (DATA.groups || []).find(g => g.id === gName);
     const displayName = gInfo ? (gInfo.name_zh || gInfo.name || gName) : gName;
     const displayNameEn = gInfo && gInfo.name_zh && gInfo.name !== gInfo.name_zh ? gInfo.name : '';
+    const dialogueCount = gPassages.filter(p => (p.type || 'dialogue') === 'dialogue').length;
 
     const header = document.createElement('div');
     header.className = 'group-header';
     header.innerHTML = `
-      <span class="group-arrow${isOpen ? ' open' : ''}">▶</span>
+      <span class="group-arrow${isOpen ? ' open' : ''}">&#9654;</span>
       <div class="group-info">
         <h2>${escHtml(displayName)}</h2>
         ${displayNameEn ? `<div class="group-name-en">${escHtml(displayNameEn)}</div>` : ''}
       </div>
-      <div class="group-stats"><b>${gPassages.length}</b> 段落</div>
+      <div class="group-stats"><b>${dialogueCount}</b> 對話</div>
     `;
 
     const body = document.createElement('div');
@@ -602,7 +577,6 @@ function renderGroupView(passages) {
       }
     });
 
-    // Auto-render if was open
     if (isOpen && !body.dataset.rendered) {
       renderPassageChunked(body, gPassages, 0);
       body.dataset.rendered = '1';
@@ -613,15 +587,13 @@ function renderGroupView(passages) {
   });
 }
 
-// === Grouping (respects DATA.groups order from JSON) ===
 function groupPassages(passages) {
   const groups = new Map();
   passages.forEach(p => {
-    const g = p.group || '（未分類）';
+    const g = p.group || '(未分類)';
     if (!groups.has(g)) groups.set(g, []);
     groups.get(g).push(p);
   });
-  // Use DATA.groups order if available, otherwise fallback to count-based sort
   if (DATA.groups && DATA.groups.length > 0) {
     const ordered = [];
     const seen = new Set();
@@ -632,7 +604,6 @@ function groupPassages(passages) {
         seen.add(key);
       }
     });
-    // Append any groups not in DATA.groups
     groups.forEach((v, k) => { if (!seen.has(k)) ordered.push([k, v]); });
     return ordered;
   }
@@ -652,11 +623,11 @@ function renderAllView(passages) {
 
 // === Chunked Rendering ===
 function renderPassageChunked(container, passages, startIdx) {
-  const CHUNK = 80;
+  const CHUNK = 100;
   const end = Math.min(startIdx + CHUNK, passages.length);
   let html = '';
   for (let i = startIdx; i < end; i++) {
-    html += passageHtml(passages[i], i);
+    html += passageHtml(passages[i]);
   }
   container.insertAdjacentHTML('beforeend', html);
 
