@@ -14,14 +14,18 @@
   --text3: #555570;
   --accent: #a855f7;
   --accent2: #533483;
-  --accent-glow: #a855f722;
+  --accent-glow: rgba(168,85,247,0.13);
+  --accent2-glow: rgba(83,52,131,0.15);
   --border: #2a2a42;
   --card: #1a1a2e;
   --card-hover: #1e1e36;
-  --tag-bg: rgba(74,153,153,0.15);
-  --tag-text: #5db8b8;
+  --tag-char: #38bdf8;
+  --tag-cond: #a78bfa;
   --success: #4ade80;
+  --warm: #f59e0b;
+  --pink: #ec4899;
   --radius: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.3);
   --bubble-npc: #1e2a3a;
   --bubble-mc: #2a1e3a;
   --bubble-narrator: #1a1a2e;
@@ -40,7 +44,7 @@ body {
 }
 .app { display: flex; height: 100vh; flex-direction: column; }
 
-/* === Chapter Sidebar (only when chapters exist) === */
+/* === Chapter Sidebar === */
 .app-body { display: flex; flex: 1; overflow: hidden; }
 .chapter-sidebar {
   width: var(--sidebar-w);
@@ -53,22 +57,18 @@ body {
 .chapter-sidebar.visible { display: block; }
 .chapter-sidebar-title {
   padding: 14px 16px 8px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 12px; font-weight: 700;
   color: var(--text3);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 .chapter-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex; align-items: center; gap: 8px;
   padding: 8px 16px;
   cursor: pointer;
   transition: background 0.15s;
   border-left: 3px solid transparent;
-  font-size: 13px;
-  color: var(--text2);
+  font-size: 13px; color: var(--text2);
 }
 .chapter-item:hover { background: var(--bg3); color: var(--text); }
 .chapter-item.active {
@@ -80,102 +80,108 @@ body {
 .chapter-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chapter-count { font-size: 11px; color: var(--text3); flex-shrink: 0; }
 .chapter-progress-bar {
-  width: 100%;
-  height: 2px;
+  width: 100%; height: 2px;
   background: var(--bg);
   border-radius: 1px;
-  margin-top: 4px;
-  overflow: hidden;
+  margin-top: 4px; overflow: hidden;
 }
 .chapter-progress-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 1px;
-  transition: width 0.3s;
+  height: 100%; background: var(--accent);
+  border-radius: 1px; transition: width 0.3s;
 }
 
-/* Mobile chapter button */
+/* Mobile chapter */
 .chapter-fab {
   display: none;
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 100;
-  width: 48px;
-  height: 48px;
+  position: fixed; bottom: 20px; left: 20px; z-index: 100;
+  width: 48px; height: 48px;
   border-radius: 50%;
-  background: var(--accent2);
-  color: #fff;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+  background: var(--accent2); color: #fff; border: none;
+  font-size: 20px; cursor: pointer;
   box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   transition: transform 0.2s;
 }
 .chapter-fab:active { transform: scale(0.9); }
-
-/* Mobile overlay sidebar */
 .sidebar-overlay {
   display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 200;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); z-index: 200;
 }
 .sidebar-overlay.active { display: block; }
 .sidebar-mobile {
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  width: 280px;
-  background: var(--bg2);
-  z-index: 201;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 280px; background: var(--bg2); z-index: 201;
   overflow-y: auto;
   transform: translateX(-100%);
   transition: transform 0.25s ease;
 }
 .sidebar-overlay.active .sidebar-mobile { transform: translateX(0); }
 
-/* === Game Header Banner === */
+/* === Game Banner === */
 .game-banner {
-  background: linear-gradient(135deg, var(--accent2) 0%, var(--bg3) 50%, var(--bg2) 100%);
+  background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 40%, #1e1e32 100%);
   padding: 20px 24px 16px;
   border-bottom: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
 }
 .game-banner::before {
   content: '';
-  position: absolute;
-  top: 0; right: 0;
-  width: 300px; height: 100%;
-  background: radial-gradient(ellipse at 80% 50%, var(--accent-glow), transparent 70%);
+  position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(168,85,247,0.1), transparent 60%);
   pointer-events: none;
 }
-.game-banner h1 { font-size: 26px; font-weight: 700; color: #fff; letter-spacing: 1px; margin-bottom: 2px; }
-.game-banner .subtitle { font-size: 13px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 8px; }
-.game-banner .banner-stats { display: flex; gap: 16px; font-size: 12px; color: rgba(255,255,255,0.55); flex-wrap: wrap; }
-.game-banner .banner-stats .stat-item { display: flex; align-items: center; gap: 5px; }
-.game-banner .banner-stats b { color: var(--accent); }
-.translation-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;
+.game-banner::after {
+  content: '';
+  position: absolute; bottom: -50%; left: 10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(192,132,252,0.06), transparent 60%);
+  pointer-events: none;
 }
-.translation-badge.full { background: rgba(74,222,128,0.15); color: var(--success); }
-.translation-badge.partial { background: rgba(251,191,36,0.15); color: #fbbf24; }
-
-/* Banner progress bar */
+.banner-top { display: flex; align-items: center; gap: 16px; position: relative; z-index: 1; }
+.banner-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), #c084fc);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(168,85,247,0.3);
+}
+.banner-text h1 { font-size: 24px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+.banner-text .subtitle { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+.banner-stats {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  margin-top: 12px; font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  position: relative; z-index: 1;
+}
+.stat-item { display: flex; align-items: center; gap: 4px; }
+.stat-item b { color: var(--accent); }
+.char-avatars {
+  display: flex; gap: 4px; margin-left: auto;
+  position: relative; z-index: 1;
+}
+.char-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+  border: 2px solid rgba(255,255,255,0.15);
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  background-size: cover; background-position: center;
+}
+.char-avatar:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(255,255,255,0.2);
+}
 .banner-progress {
-  margin-top: 10px;
-  height: 4px;
+  margin-top: 10px; height: 4px;
   background: rgba(255,255,255,0.08);
-  border-radius: 2px;
-  overflow: hidden;
+  border-radius: 2px; overflow: hidden;
+  position: relative; z-index: 1;
 }
 .banner-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--success));
-  border-radius: 2px;
-  transition: width 0.5s;
+  border-radius: 2px; transition: width 0.5s;
 }
 
 /* === Toolbar === */
@@ -185,35 +191,74 @@ body {
   padding: 8px 16px;
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
+.search-wrap { position: relative; flex-shrink: 1; min-width: 140px; }
+.search-wrap::before {
+  content: '\1F50D';
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px; pointer-events: none; z-index: 1;
+}
+.search-wrap .search-box { width: 100%; padding-left: 32px; }
 .search-box {
-  padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 20px;
+  border: 1px solid var(--border);
   background: var(--bg); color: var(--text); font-size: 13px;
-  width: 220px; flex-shrink: 1; min-width: 140px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 240px; transition: border-color 0.2s, box-shadow 0.2s;
 }
 .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 .search-box::placeholder { color: var(--text3); }
-.toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
-.toggle-row { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); cursor: pointer; white-space: nowrap; user-select: none; }
-.toggle-row input { accent-color: var(--accent); cursor: pointer; }
+.toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.toggle-row { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text2); cursor: pointer; white-space: nowrap; user-select: none; }
+.toggle-row input { accent-color: var(--accent); cursor: pointer; width: 14px; height: 14px; }
 .toggle-row:hover { color: var(--text); }
-.view-toggle { display: flex; gap: 4px; }
+.view-toggle { display: flex; gap: 3px; }
 .view-btn {
-  padding: 5px 14px; border-radius: 6px; border: 1px solid var(--border);
-  background: transparent; color: var(--text2); font-size: 12px; cursor: pointer; transition: all 0.2s;
+  padding: 5px 12px; border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text2); font-size: 11px;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
 }
 .view-btn:hover { background: var(--bg3); color: var(--text); }
-.view-btn.active { background: var(--accent2); color: #fff; border-color: var(--accent2); box-shadow: 0 2px 8px rgba(83,52,131,0.3); }
+.view-btn.active {
+  background: var(--accent2); color: #fff;
+  border-color: var(--accent2);
+  box-shadow: 0 2px 8px rgba(83,52,131,0.3);
+}
+
+/* === Filter Bar === */
+.filter-bar {
+  background: var(--bg2);
+  padding: 4px 16px 6px;
+  border-bottom: 1px solid var(--border);
+  display: none;
+}
+.filter-bar.visible { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.filter-chip {
+  padding: 3px 10px; border-radius: 14px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text2);
+  font-size: 11px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.filter-chip:hover { border-color: var(--text2); color: var(--text); }
+.filter-chip.active {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.filter-chip img {
+  width: 16px; height: 16px; border-radius: 50%;
+  vertical-align: middle; margin-right: 3px;
+  image-rendering: pixelated;
+}
 
 /* === Content Area === */
 .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .content { flex: 1; overflow-y: auto; padding: 16px 20px 40px; scroll-behavior: smooth; }
 
-/* === Chapter Divider (inserted between groups in chapter view) === */
+/* === Chapter Divider === */
 .chapter-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: flex; align-items: center; gap: 12px;
   margin: 28px 0 10px 0;
   padding: 10px 16px;
   background: linear-gradient(135deg, rgba(168,85,247,0.08), transparent);
@@ -226,140 +271,117 @@ body {
 .chapter-divider-title { font-size: 16px; font-weight: 700; color: var(--text); }
 .chapter-divider-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
 .chapter-divider-progress {
-  font-size: 11px;
-  color: var(--text3);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 11px; color: var(--text3); flex-shrink: 0;
+  display: flex; align-items: center; gap: 6px;
 }
 .chapter-divider-progress .mini-bar {
-  width: 60px;
-  height: 3px;
-  background: var(--bg);
-  border-radius: 2px;
-  overflow: hidden;
+  width: 60px; height: 3px;
+  background: var(--bg); border-radius: 2px; overflow: hidden;
 }
 .chapter-divider-progress .mini-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 2px;
+  height: 100%; background: var(--accent); border-radius: 2px;
 }
 
 /* === Group Headers === */
 .group-header {
   width: 100%;
-  background: linear-gradient(135deg, var(--accent2), var(--bg3));
+  background: linear-gradient(135deg, var(--bg3), var(--bg2));
   padding: 14px 20px;
-  margin: 20px 0 6px 0;
+  margin: 16px 0 4px 0;
   border-radius: var(--radius);
   position: sticky; top: 0; z-index: 10;
   cursor: pointer; user-select: none;
   display: flex; align-items: center; gap: 12px;
-  transition: transform 0.1s;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s;
 }
 .group-header:first-child { margin-top: 0; }
 .chapter-divider + .group-header { margin-top: 6px; }
-.group-header:active { transform: scale(0.995); }
-.group-arrow { font-size: 12px; color: rgba(255,255,255,0.4); transition: transform 0.2s; flex-shrink: 0; }
+.group-header:hover { border-color: var(--accent); }
+.group-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+  background: var(--accent2);
+  color: #fff; font-weight: 700;
+}
+.group-arrow { font-size: 10px; color: var(--text3); transition: transform 0.2s; flex-shrink: 0; }
 .group-arrow.open { transform: rotate(90deg); }
 .group-info { flex: 1; min-width: 0; }
-.group-header h2 { font-size: 18px; font-weight: 600; color: #fff; margin: 0; border: none; padding: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.group-header .group-name-en { font-size: 11px; color: rgba(255,255,255,0.35); font-style: italic; margin-top: 1px; }
-.group-header .group-stats { font-size: 12px; color: rgba(255,255,255,0.45); flex-shrink: 0; }
+.group-header h2 {
+  font-size: 16px; font-weight: 600; color: #fff;
+  margin: 0; border: none; padding: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.group-header .group-name-en { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.group-header .group-stats {
+  font-size: 11px; color: var(--text2); flex-shrink: 0;
+  display: flex; align-items: center; gap: 8px;
+}
 .group-header .group-stats b { color: var(--accent); }
 .group-body { display: none; padding: 2px 0; }
 .group-body.open { display: block; }
 
 /* === Dialogue Bubble UI === */
 .msg {
-  display: flex;
-  gap: 10px;
-  padding: 6px 12px;
-  margin: 3px 0;
+  display: flex; gap: 10px;
+  padding: 6px 12px; margin: 3px 0;
   align-items: flex-start;
   max-width: 85%;
   animation: fadeIn 0.15s ease;
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
 .msg.npc { flex-direction: row; margin-right: auto; }
 .msg.mc { flex-direction: row-reverse; margin-left: auto; }
 .msg.narrator { max-width: 70%; margin: 8px auto; justify-content: center; }
-
-/* Portrait */
 .msg-portrait {
-  width: 52px; height: 52px;
-  border-radius: 50%;
+  width: 52px; height: 52px; border-radius: 50%;
   flex-shrink: 0;
   border: 2px solid var(--border);
   background: var(--bg3);
-  object-fit: cover;
-  image-rendering: pixelated;
+  object-fit: cover; image-rendering: pixelated;
 }
 .msg.mc .msg-portrait { border-color: var(--speaker-mc); }
 .msg.npc .msg-portrait { border-color: var(--speaker-npc); }
-
-/* Bubble */
 .msg-bubble {
   background: var(--bubble-npc);
-  border-radius: 14px;
-  padding: 8px 14px;
-  position: relative;
-  min-width: 60px;
+  border-radius: 14px; padding: 8px 14px;
+  position: relative; min-width: 60px;
   border: 1px solid rgba(255,255,255,0.06);
 }
 .msg.mc .msg-bubble { background: var(--bubble-mc); }
 .msg.narrator .msg-bubble {
   background: var(--bubble-narrator);
   border: 1px dashed var(--border);
-  font-style: italic;
-  text-align: center;
+  font-style: italic; text-align: center;
 }
-
-/* Speaker Name */
 .msg-speaker {
-  font-size: 11px;
-  font-weight: 700;
-  margin-bottom: 2px;
-  letter-spacing: 0.3px;
+  font-size: 11px; font-weight: 700;
+  margin-bottom: 2px; letter-spacing: 0.3px;
 }
 .msg.npc .msg-speaker { color: var(--speaker-npc); }
 .msg.mc .msg-speaker { color: var(--speaker-mc); }
-
-/* Message Text */
 .msg-text {
-  font-size: 14.5px;
-  line-height: 1.75;
-  color: var(--text);
-  white-space: pre-wrap;
-  word-break: break-word;
+  font-size: 14.5px; line-height: 1.75;
+  color: var(--text); white-space: pre-wrap; word-break: break-word;
 }
 .msg-text-en {
-  font-size: 11.5px;
-  color: var(--text2);
-  margin-top: 4px;
-  padding-top: 4px;
+  font-size: 11.5px; color: var(--text2);
+  margin-top: 4px; padding-top: 4px;
   border-top: 1px dashed rgba(255,255,255,0.08);
-  font-style: italic;
-  line-height: 1.5;
+  font-style: italic; line-height: 1.5;
   white-space: pre-wrap;
 }
 
-/* CG Image */
+/* === CG Image === */
 .msg-cg {
-  margin: 8px 0;
-  text-align: center;
-  max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 8px 0; text-align: center;
+  max-width: 90%; margin-left: auto; margin-right: auto;
 }
 .msg-cg img {
-  max-width: 100%;
-  max-height: 300px;
-  border-radius: 10px;
-  cursor: pointer;
+  max-width: 100%; max-height: 300px;
+  border-radius: 10px; cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
   border: 1px solid var(--border);
 }
@@ -367,74 +389,108 @@ body {
   transform: scale(1.02);
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
-.msg-cg-label {
-  font-size: 10px;
-  color: var(--text3);
-  margin-top: 4px;
-}
+.msg-cg-label { font-size: 10px; color: var(--text3); margin-top: 4px; }
 
-/* Choice (with branch marker) */
+/* === Choice === */
 .msg-choice {
-  margin: 6px 12px;
-  padding: 8px 14px;
-  background: var(--bg3);
-  border-radius: 10px;
+  margin: 6px 12px; padding: 8px 14px;
+  background: var(--bg3); border-radius: 10px;
   border: 1px solid rgba(96,165,250,0.2);
-  max-width: 85%;
-  position: relative;
+  max-width: 85%; position: relative;
 }
-.msg-choice-label {
-  font-size: 11px;
-  color: var(--speaker-npc);
-  margin-bottom: 4px;
-  font-weight: 600;
-}
+.msg-choice-label { font-size: 11px; color: var(--speaker-npc); margin-bottom: 4px; font-weight: 600; }
 .msg-choice-item {
   display: inline-block;
-  padding: 3px 12px;
-  margin: 2px 4px 2px 0;
+  padding: 3px 12px; margin: 2px 4px 2px 0;
   border-radius: 16px;
   background: rgba(96,165,250,0.12);
-  color: var(--speaker-npc);
-  font-size: 13px;
+  color: var(--speaker-npc); font-size: 13px;
   border: 1px solid rgba(96,165,250,0.2);
 }
 
 /* PID overlay */
 .msg-pid {
-  font-size: 9px;
-  color: var(--text3);
+  font-size: 9px; color: var(--text3);
   font-family: 'Consolas', monospace;
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  opacity: 0;
-  transition: opacity 0.15s;
+  position: absolute; top: 4px; right: 8px;
+  opacity: 0; transition: opacity 0.15s;
 }
 .msg:hover .msg-pid,
 .msg-cg:hover .msg-pid,
 .msg-choice:hover .msg-pid { opacity: 1; }
 
+/* === Character View === */
+.char-section {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.char-section-header {
+  padding: 14px 18px;
+  background: var(--bg2);
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; user-select: none;
+  transition: background 0.15s;
+}
+.char-section-header:hover { background: var(--bg3); }
+.char-section-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover; image-rendering: pixelated;
+  border: 2px solid var(--border);
+}
+.char-section-avatar-text {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.char-section-info { flex: 1; min-width: 0; }
+.char-section-info h3 { font-size: 16px; font-weight: 600; color: #fff; }
+.char-section-info .meta { font-size: 12px; color: var(--text2); }
+.char-section-arrow { font-size: 10px; color: var(--text3); transition: transform 0.2s; }
+.char-section-arrow.open { transform: rotate(90deg); }
+.char-section-body { display: none; }
+.char-section-body.open { display: block; padding: 4px 8px 8px; }
+
+/* === Scene View sub-sections === */
+.scene-sub-section {
+  margin: 4px 0 4px 16px;
+  border-left: 2px solid var(--border);
+  padding-left: 12px;
+}
+.scene-sub-header {
+  padding: 6px 12px;
+  cursor: pointer; user-select: none;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text2);
+  transition: color 0.15s;
+}
+.scene-sub-header:hover { color: var(--text); }
+.scene-sub-header .char-face {
+  width: 24px; height: 24px; border-radius: 50%;
+  object-fit: cover; image-rendering: pixelated;
+}
+.scene-sub-body { display: none; }
+.scene-sub-body.open { display: block; }
+
 /* === CG Lightbox === */
 .lightbox {
   display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.92);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.92); z-index: 1000;
+  justify-content: center; align-items: center;
   cursor: pointer;
 }
 .lightbox.active { display: flex; }
 .lightbox img {
-  max-width: 95vw;
-  max-height: 95vh;
+  max-width: 95vw; max-height: 95vh;
   border-radius: 8px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6);
 }
 
-/* === Loading / Empty === */
+/* === States === */
 .loading { text-align: center; padding: 80px 20px; color: var(--text2); }
 .loading .spinner {
   display: inline-block; width: 36px; height: 36px;
@@ -448,77 +504,90 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent2); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* === Keyboard Hint === */
+.kb-hint {
+  position: fixed; bottom: 12px; right: 16px;
+  font-size: 10px; color: var(--text3);
+  pointer-events: none; z-index: 100;
+}
+.kb-hint kbd {
+  padding: 1px 4px; border-radius: 3px;
+  background: var(--bg2); border: 1px solid var(--border);
+  font-family: inherit;
+}
 
 /* === Mobile === */
 @media (max-width: 768px) {
   .game-banner { padding: 16px; }
-  .game-banner h1 { font-size: 22px; }
+  .banner-top h1 { font-size: 20px; }
+  .banner-icon { width: 42px; height: 42px; font-size: 20px; }
+  .char-avatars { display: none; }
   .content { padding: 10px 8px 40px; }
   .msg { max-width: 95%; padding: 4px 6px; }
   .msg.narrator { max-width: 90%; }
   .msg-portrait { width: 40px; height: 40px; }
   .msg-text { font-size: 14px; }
   .toolbar { padding: 6px 10px; gap: 6px; }
+  .search-wrap { width: 100%; }
   .search-box { width: 100%; }
   .toolbar-right { margin-left: 0; width: 100%; flex-wrap: wrap; justify-content: center; }
   .view-toggle { width: 100%; justify-content: center; }
-  .group-header { padding: 12px 14px; }
-  .group-header h2 { font-size: 16px; }
+  .filter-bar { padding: 4px 10px; }
+  .group-header { padding: 10px 14px; }
+  .group-header h2 { font-size: 15px; }
   .msg-cg img { max-height: 200px; }
   .chapter-sidebar { display: none !important; }
   .chapter-fab.visible { display: flex; align-items: center; justify-content: center; }
   .chapter-divider { margin: 20px 0 8px 0; padding: 8px 12px; }
-  .chapter-divider-icon { font-size: 18px; }
-  .chapter-divider-title { font-size: 14px; }
+  .kb-hint { display: none; }
 }
 </style>
 </head>
 <body>
 <div class="app">
-  <!-- Game Banner -->
   <div class="game-banner">
-    <h1 id="gameTitle">載入中...</h1>
-    <div class="subtitle" id="gameSubtitle"></div>
+    <div class="banner-top">
+      <div class="banner-icon">MC</div>
+      <div class="banner-text">
+        <h1 id="gameTitle">魔法營地</h1>
+        <div class="subtitle" id="gameSubtitle">RPG Maker 互動敘事 | 魔法冒險</div>
+      </div>
+      <div class="char-avatars" id="charAvatars"></div>
+    </div>
     <div class="banner-stats" id="bannerStats"></div>
     <div class="banner-progress" id="bannerProgress" style="display:none">
       <div class="banner-progress-fill" id="bannerProgressFill"></div>
     </div>
   </div>
 
-  <!-- Toolbar -->
   <div class="toolbar">
-    <input type="text" class="search-box" id="searchBox" placeholder="搜尋對話內容或角色名...">
+    <div class="search-wrap">
+      <input type="text" class="search-box" id="searchBox" placeholder="搜尋對話、角色、場景... (/)">
+    </div>
     <div class="toolbar-right">
-      <label class="toggle-row">
-        <input type="checkbox" id="showZh" checked>
-        <span>中文</span>
-      </label>
-      <label class="toggle-row">
-        <input type="checkbox" id="showEn">
-        <span>英文原文</span>
-      </label>
-      <label class="toggle-row">
-        <input type="checkbox" id="showName">
-        <span>段落 ID</span>
-      </label>
+      <label class="toggle-row"><input type="checkbox" id="showZh" checked><span>中文</span></label>
+      <label class="toggle-row"><input type="checkbox" id="showEn"><span>英文</span></label>
+      <label class="toggle-row"><input type="checkbox" id="showChoices" checked><span>選項</span></label>
+      <label class="toggle-row"><input type="checkbox" id="showPid"><span>PID</span></label>
       <div class="view-toggle">
-        <button class="view-btn active" data-view="group" id="viewGroup">按場景</button>
-        <button class="view-btn" data-view="chapter" id="viewChapter" style="display:none">按章節</button>
-        <button class="view-btn" data-view="all" id="viewAll">全部對話</button>
+        <button class="view-btn active" data-view="narrative" id="viewNarrative">敘事</button>
+        <button class="view-btn" data-view="scene" id="viewScene">場景</button>
+        <button class="view-btn" data-view="character" id="viewChar">角色</button>
       </div>
     </div>
   </div>
 
-  <!-- Body: sidebar + main content -->
+  <div class="filter-bar" id="filterBar">
+    <div id="filterRow" style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;"></div>
+  </div>
+
   <div class="app-body">
-    <!-- Chapter Sidebar (desktop) -->
     <nav class="chapter-sidebar" id="chapterSidebar">
       <div class="chapter-sidebar-title">章節導航</div>
       <div id="chapterList"></div>
     </nav>
-
-    <!-- Main Content -->
     <div class="main-content">
       <div class="content" id="content">
         <div class="loading">
@@ -530,10 +599,7 @@ body {
   </div>
 </div>
 
-<!-- Chapter FAB (mobile) -->
 <button class="chapter-fab" id="chapterFab" title="章節導航">&#9776;</button>
-
-<!-- Mobile sidebar overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay">
   <div class="sidebar-mobile" id="sidebarMobile">
     <div class="chapter-sidebar-title">章節導航</div>
@@ -541,25 +607,35 @@ body {
   </div>
 </div>
 
-<!-- CG Lightbox -->
 <div class="lightbox" id="lightbox">
   <img id="lightboxImg" src="" alt="">
 </div>
 
-<script>
-// === Config (injected by build script) ===
-const GAME_CONFIG = {"title": "Magical Camp", "title_zh": "魔法營地", "color_accent": "#a855f7", "engine": "rpgmaker"};
+<div class="kb-hint">
+  <kbd>/</kbd> 搜尋 &nbsp; <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> 切換視圖 &nbsp; <kbd>Esc</kbd> 清除
+</div>
 
-// Protagonist detection
-const MC_NAMES = new Set(['erica', 'eric', '\\v[1]', 'you', '你']);
+<script>
+// ============================================================
+// Magical Camp - Enhanced Narrative Viewer
+// ============================================================
+
+// === Constants ===
+const CHUNK_SIZE = 80;
+const MC_NAMES = new Set(['erica', 'eric', '\\v[1]', 'you', '你', 'エリカ']);
 const MC_FACE_PATTERNS = ['MC2', 'MC3', 'mc2', 'mc3'];
 
-function isMC(p) {
-  const name = (p.speaker_name || '').toLowerCase();
-  if (MC_NAMES.has(name)) return true;
-  const face = p.portrait || '';
-  return MC_FACE_PATTERNS.some(pat => face.includes(pat));
-}
+const CHAR_COLORS = {
+  'Erica': '#c084fc', 'Natalie': '#f472b6', 'Veronica': '#fb923c',
+  'Isabelle': '#38bdf8', 'Alice': '#a78bfa', 'Marianne': '#4ade80',
+  'Wendy': '#f43f5e', 'Tilia': '#22d3ee', 'Olivia': '#fbbf24',
+  'Yoshida': '#ef4444', 'Nele': '#818cf8', 'Julie': '#2dd4bf',
+  'Belle': '#e879f9', 'Giselle': '#fb7185', 'Catherine': '#94a3b8',
+  'Rania': '#c084fc', 'Akiko': '#f9a8d4', 'Shelly': '#67e8f9',
+  'Camelia': '#fda4af', 'Nathan': '#60a5fa', 'Sophie': '#86efac'
+};
+
+const CHAPTER_ICONS = {};
 
 // === State ===
 let DATA = null;
@@ -567,11 +643,17 @@ let hasChapters = false;
 let searchQuery = '';
 let showZh = true;
 let showEn = false;
-let showName = false;
-let currentView = 'group';
-let openGroups = new Set();
+let showChoices = true;
+let showPid = false;
+let currentView = 'narrative';
+let openSections = new Set();
 let viewedGroups = new Set();
 let activeChapter = null;
+let charFilter = null;
+
+// Character index (built from passages)
+let charIndex = {};   // { charName: { count, portrait, passages: [pid...] } }
+let topChars = [];    // sorted by count, top 20
 
 // === Progress Tracking ===
 const STORAGE_KEY = 'mc_viewed_groups';
@@ -594,63 +676,102 @@ function markGroupViewed(gName) {
 
 // === Data Loading ===
 async function loadData() {
-  const resp = await fetch('data/passages.json?v=' + Date.now());
-  DATA = await resp.json();
-  hasChapters = !!(DATA.chapters && DATA.chapters.length > 0);
-  if (!DATA.meta.has_zh) {
-    document.getElementById('showZh').parentElement.style.display = 'none';
-    showZh = false;
-    showEn = true;
-    document.getElementById('showEn').checked = true;
+  try {
+    const resp = await fetch('data/passages.json?v=' + Date.now());
+    DATA = await resp.json();
+    hasChapters = !!(DATA.chapters && DATA.chapters.length > 0);
+    if (!DATA.meta.has_zh) {
+      document.getElementById('showZh').parentElement.style.display = 'none';
+      showZh = false;
+      showEn = true;
+      document.getElementById('showEn').checked = true;
+    }
+    buildCharacterIndex();
+    loadViewedGroups();
+    init();
+  } catch(e) {
+    document.getElementById('content').innerHTML =
+      '<div class="empty-state">載入失敗: ' + e.message + '</div>';
   }
-  loadViewedGroups();
-  init();
+}
+
+// === Build Character Index ===
+function buildCharacterIndex() {
+  charIndex = {};
+  DATA.passages.forEach(function(p) {
+    var speaker = p.speaker_name;
+    if (!speaker) return;
+    if (!charIndex[speaker]) {
+      charIndex[speaker] = { count: 0, portrait: p.portrait || '', passages: [] };
+    }
+    charIndex[speaker].count++;
+    if (!charIndex[speaker].portrait && p.portrait) {
+      charIndex[speaker].portrait = p.portrait;
+    }
+    // Only store PIDs for reasonable sizes
+    if (charIndex[speaker].passages.length < 5000) {
+      charIndex[speaker].passages.push(p.pid);
+    }
+  });
+  // Sort by count
+  topChars = Object.keys(charIndex)
+    .map(function(name) { return { name: name, count: charIndex[name].count, portrait: charIndex[name].portrait }; })
+    .sort(function(a, b) { return b.count - a.count; })
+    .slice(0, 30);
+}
+
+function isMC(p) {
+  var name = (p.speaker_name || '').toLowerCase();
+  if (MC_NAMES.has(name)) return true;
+  var face = p.portrait || '';
+  return MC_FACE_PATTERNS.some(function(pat) { return face.includes(pat); });
 }
 
 // === Banner ===
 function renderBanner() {
-  const m = DATA.meta;
-  const titleZh = m.title_zh || m.title || '';
-  const titleEn = m.title || '';
-  document.getElementById('gameTitle').textContent = titleZh;
-  document.getElementById('gameSubtitle').textContent = titleZh !== titleEn ? titleEn : '';
-  document.title = titleZh + ' — 互動敘事地圖';
+  var m = DATA.meta;
+  var total = m.total || DATA.passages.length;
+  var dialogues = DATA.passages.filter(function(p) { return p.type === 'dialogue'; }).length;
+  var zhCount = m.translated_count || DATA.passages.filter(function(p) { return p.content_zh; }).length;
+  var groupCount = (DATA.groups || []).length;
+  var pct = total > 0 ? Math.round(zhCount / total * 100) : 0;
+  var charCount = topChars.length;
 
-  const total = m.total || DATA.passages.length;
-  const dialogues = DATA.passages.filter(p => p.type !== 'picture' && p.type !== 'choice').length;
-  const zhCount = DATA.passages.filter(p => p.content_zh).length;
-  const groupCount = (DATA.groups || []).length;
-  const pct = dialogues > 0 ? Math.round(zhCount / dialogues * 100) : 0;
+  document.getElementById('bannerStats').innerHTML =
+    '<span class="stat-item"><b>' + (hasChapters ? DATA.chapters.length : 0) + '</b> 章節</span>' +
+    '<span class="stat-item"><b>' + groupCount + '</b> 場景</span>' +
+    '<span class="stat-item"><b>' + dialogues.toLocaleString() + '</b> 對話</span>' +
+    '<span class="stat-item"><b>' + charCount + '</b> 角色</span>' +
+    '<span class="stat-item" style="color:' + (pct >= 95 ? '#4ade80' : '#fbbf24') + '">' + pct + '% 已翻譯</span>';
 
-  let badgeClass = pct >= 95 ? 'full' : 'partial';
-  let badgeText = pct >= 95 ? '\u2713 翻譯完成' : pct + '% 已翻譯';
-
-  let statsHtml = `
-    <span class="stat-item"><b>${groupCount}</b> 場景</span>
-    <span class="stat-item"><b>${dialogues}</b> 對話</span>
-    <span class="translation-badge ${badgeClass}">${badgeText}</span>
-  `;
-  if (hasChapters) {
-    statsHtml += `<span class="stat-item"><b>${DATA.chapters.length}</b> 章節</span>`;
-  }
-  document.getElementById('bannerStats').innerHTML = statsHtml;
+  // Character avatars in banner
+  var avatarBox = document.getElementById('charAvatars');
+  avatarBox.innerHTML = topChars.slice(0, 8).map(function(c) {
+    var color = CHAR_COLORS[c.name] || '#64748b';
+    if (c.portrait) {
+      return '<div class="char-avatar" style="background-image:url(' + c.portrait + ');background-color:' + color + '" title="' + escHtml(c.name) + ' (' + c.count + ')" onclick="filterByChar(\'' + escHtml(c.name).replace(/'/g, "\\'") + '\')"></div>';
+    }
+    return '<div class="char-avatar" style="background:' + color + '" title="' + escHtml(c.name) + ' (' + c.count + ')" onclick="filterByChar(\'' + escHtml(c.name).replace(/'/g, "\\'") + '\')">' + c.name[0] + '</div>';
+  }).join('');
 
   // Progress bar
   if (hasChapters) {
-    const totalGroups = groupCount;
-    const viewedCount = [...viewedGroups].filter(g => DATA.groups.some(gi => gi.id === g)).length;
-    const readPct = totalGroups > 0 ? Math.round(viewedCount / totalGroups * 100) : 0;
-    const bar = document.getElementById('bannerProgress');
-    bar.style.display = 'block';
+    var totalGroups = groupCount;
+    var viewedCount = 0;
+    viewedGroups.forEach(function(g) {
+      if (DATA.groups.some(function(gi) { return gi.id === g; })) viewedCount++;
+    });
+    var readPct = totalGroups > 0 ? Math.round(viewedCount / totalGroups * 100) : 0;
+    document.getElementById('bannerProgress').style.display = 'block';
     document.getElementById('bannerProgressFill').style.width = readPct + '%';
   }
 }
 
 // === Chapter Sidebar ===
 function buildGroupChapterMap() {
-  const map = {};
+  var map = {};
   if (!hasChapters) return map;
-  DATA.groups.forEach(g => {
+  DATA.groups.forEach(function(g) {
     if (g.chapter !== undefined) map[g.id] = g.chapter;
   });
   return map;
@@ -658,38 +779,34 @@ function buildGroupChapterMap() {
 
 function renderChapterSidebar() {
   if (!hasChapters) return;
-
-  const gcMap = buildGroupChapterMap();
-  const html = DATA.chapters.map(ch => {
-    const chGroups = DATA.groups.filter(g => gcMap[g.id] === ch.id);
-    const viewed = chGroups.filter(g => viewedGroups.has(g.id)).length;
-    const pct = chGroups.length > 0 ? Math.round(viewed / chGroups.length * 100) : 0;
-    return `<div class="chapter-item${activeChapter === ch.id ? ' active' : ''}" data-ch="${ch.id}">
-      <span class="chapter-icon">${ch.icon || ''}</span>
-      <div style="flex:1;min-width:0">
-        <div class="chapter-label">${escHtml(ch.name)}</div>
-        <div class="chapter-progress-bar"><div class="chapter-progress-fill" style="width:${pct}%"></div></div>
-      </div>
-      <span class="chapter-count">${chGroups.length}</span>
-    </div>`;
+  var gcMap = buildGroupChapterMap();
+  var html = DATA.chapters.map(function(ch) {
+    var chGroups = DATA.groups.filter(function(g) { return gcMap[g.id] === ch.id; });
+    var viewed = chGroups.filter(function(g) { return viewedGroups.has(g.id); }).length;
+    var pct = chGroups.length > 0 ? Math.round(viewed / chGroups.length * 100) : 0;
+    return '<div class="chapter-item' + (activeChapter === ch.id ? ' active' : '') + '" data-ch="' + ch.id + '">' +
+      '<span class="chapter-icon">' + (ch.icon || '') + '</span>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="chapter-label">' + escHtml(ch.name) + '</div>' +
+        '<div class="chapter-progress-bar"><div class="chapter-progress-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>' +
+      '<span class="chapter-count">' + chGroups.length + '</span>' +
+    '</div>';
   }).join('');
 
   document.getElementById('chapterList').innerHTML = html;
   document.getElementById('chapterListMobile').innerHTML = html;
 
-  // Bind click events
-  document.querySelectorAll('.chapter-item').forEach(el => {
-    el.addEventListener('click', () => {
-      const chId = parseInt(el.dataset.ch);
+  document.querySelectorAll('.chapter-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var chId = parseInt(el.dataset.ch);
       activeChapter = activeChapter === chId ? null : chId;
       renderChapterSidebar();
       resetAndRender();
-      // Close mobile sidebar
       document.getElementById('sidebarOverlay').classList.remove('active');
     });
   });
 
-  // Show sidebar
   document.getElementById('chapterSidebar').classList.add('visible');
   document.getElementById('chapterFab').classList.add('visible');
 }
@@ -699,68 +816,142 @@ function updateChapterProgress() {
   renderBanner();
 }
 
+// === Character Filter ===
+function filterByChar(name) {
+  if (charFilter === name) {
+    charFilter = null;
+  } else {
+    charFilter = name;
+  }
+  updateFilterBar();
+  resetAndRender();
+}
+
+function updateFilterBar() {
+  var bar = document.getElementById('filterBar');
+  var row = document.getElementById('filterRow');
+  if (currentView === 'character' || charFilter) {
+    bar.classList.add('visible');
+    var html = topChars.slice(0, 15).map(function(c) {
+      var color = CHAR_COLORS[c.name] || '#64748b';
+      var active = charFilter === c.name;
+      var style = active ? 'background:' + color + '22;border-color:' + color + ';color:' + color : '';
+      var imgTag = c.portrait ? '<img src="' + c.portrait + '" onerror="this.style.display=\'none\'">' : '';
+      return '<button class="filter-chip' + (active ? ' active' : '') + '" style="' + style + '" onclick="filterByChar(\'' + escHtml(c.name).replace(/'/g, "\\'") + '\')">' + imgTag + escHtml(c.name) + '</button>';
+    }).join('');
+    if (charFilter) {
+      html += '<button class="filter-chip" style="color:var(--warm)" onclick="charFilter=null;updateFilterBar();resetAndRender();">清除</button>';
+    }
+    row.innerHTML = html;
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
 // === Filtering ===
 function getFiltered() {
-  let passages = DATA.passages;
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    passages = passages.filter(p =>
-      (p.content_zh || '').toLowerCase().includes(q) ||
-      (p.content || '').toLowerCase().includes(q) ||
-      (p.speaker_name || '').toLowerCase().includes(q) ||
-      (p.group || '').toLowerCase().includes(q)
-    );
+  var passages = DATA.passages;
+  // Character filter
+  if (charFilter) {
+    passages = passages.filter(function(p) {
+      return p.speaker_name === charFilter;
+    });
   }
   // Chapter filter
   if (hasChapters && activeChapter !== null) {
-    const gcMap = buildGroupChapterMap();
-    const chapterGroupIds = new Set(DATA.groups.filter(g => gcMap[g.id] === activeChapter).map(g => g.id));
-    passages = passages.filter(p => chapterGroupIds.has(p.group));
+    var gcMap = buildGroupChapterMap();
+    var chapterGroupIds = new Set(DATA.groups.filter(function(g) { return gcMap[g.id] === activeChapter; }).map(function(g) { return g.id; }));
+    passages = passages.filter(function(p) { return chapterGroupIds.has(p.group); });
+  }
+  // Search filter
+  if (searchQuery) {
+    var q = searchQuery.toLowerCase();
+    passages = passages.filter(function(p) {
+      return (p.content_zh || '').toLowerCase().includes(q) ||
+        (p.content || '').toLowerCase().includes(q) ||
+        (p.speaker_name || '').toLowerCase().includes(q) ||
+        (p.group || '').toLowerCase().includes(q);
+    });
   }
   return passages;
 }
 
+// === Text Formatting ===
+function formatText(s) {
+  if (!s) return '';
+  var imgs = [];
+  var safe = s.replace(/<img\s[^>]*>/gi, function(m) {
+    var i = imgs.length;
+    var tag = m;
+    if (!/class=/.test(tag)) tag = tag.replace('<img', '<img class="passage-img"');
+    if (!/loading=/.test(tag)) tag = tag.replace('<img', '<img loading="lazy"');
+    imgs.push(tag);
+    return ' IMG' + i + ' ';
+  });
+  var html = escHtml(safe);
+  html = html.replace(/ IMG(\d+) /g, function(_, i) { return imgs[+i]; });
+  html = html.replace(/!\[(cg|img)\]\(([^)]+)\)/g, '<img src="$2" class="passage-img" loading="lazy" alt="">');
+  html = html.replace(/\[img\[([^\]]+?)\](?:\[[^\]]*\])?\]/g, '<img src="$1" class="passage-img" loading="lazy" alt="">');
+  html = html.replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br>');
+  return '<p>' + html + '</p>';
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // === Passage HTML (Dialogue Bubble) ===
 function passageHtml(p) {
-  const type = p.type || 'dialogue';
+  var type = p.type || 'dialogue';
 
   // CG Image
   if (type === 'picture') {
-    const cgName = p.cg_name || '';
-    const src = 'images/cgs/' + cgName + '.webp';
+    var cgSrc = p.content || '';
+    var imgMatch = cgSrc.match(/!\[cg\]\(([^)]+)\)/);
+    var src = imgMatch ? imgMatch[1] : ('images/cgs/' + (p.cg_name || '') + '.webp');
     return '<div class="msg-cg" style="position:relative">' +
-      '<img src="' + src + '" loading="lazy" alt="' + escHtml(cgName) + '"' +
+      '<img src="' + src + '" loading="lazy" alt="CG"' +
       ' onerror="this.parentElement.style.display=\'none\'"' +
       ' onclick="openLightbox(\'' + src + '\')">' +
-      (showName ? '<div class="msg-pid">#' + p.pid + '</div>' : '') +
+      (showPid ? '<div class="msg-pid">#' + p.pid + '</div>' : '') +
     '</div>';
   }
 
-  // Choice — with branch marker
+  // Choice
   if (type === 'choice') {
-    const choices = p.choices || p.content.split('\n');
-    const items = (Array.isArray(choices) ? choices : [choices])
-      .map(function(c) { return '<span class="msg-choice-item">' + escHtml(String(c)) + '</span>'; }).join('');
+    if (!showChoices) return '';
+    var choices = p.choices || p.content.split('\n');
+    var items = (Array.isArray(choices) ? choices : [choices])
+      .filter(function(c) { return c && String(c).trim(); })
+      .map(function(c) { return '<span class="msg-choice-item">' + escHtml(String(c).trim()) + '</span>'; }).join('');
+    var choiceZh = '';
+    if (showZh && p.content_zh) {
+      var zhItems = p.content_zh.split('\n').filter(function(c) { return c.trim(); })
+        .map(function(c) { return '<span class="msg-choice-item">' + escHtml(c.trim()) + '</span>'; }).join('');
+      choiceZh = '<div style="margin-top:4px">' + zhItems + '</div>';
+    }
     return '<div class="msg-choice">' +
       '<div class="msg-choice-label">\u2694 故事分歧點</div>' +
-      items +
-      (showName ? '<div class="msg-pid" style="position:absolute;top:4px;right:8px">#' + p.pid + '</div>' : '') +
+      (showEn ? items : '') +
+      choiceZh +
+      (showPid ? '<div class="msg-pid" style="position:absolute;top:4px;right:8px">#' + p.pid + '</div>' : '') +
     '</div>';
   }
 
   // Dialogue
-  const speaker = p.speaker_name || '';
-  const mc = isMC(p);
-  const hasPortrait = !!p.portrait;
-  const align = speaker ? (mc ? 'mc' : 'npc') : 'narrator';
+  var speaker = p.speaker_name || '';
+  var mc = isMC(p);
+  var hasPortrait = !!p.portrait;
+  var align = speaker ? (mc ? 'mc' : 'npc') : 'narrator';
 
-  const portraitHtml = hasPortrait
+  var portraitHtml = hasPortrait
     ? '<img class="msg-portrait" src="' + p.portrait + '" alt="' + escHtml(speaker) + '" loading="lazy" onerror="this.style.display=\'none\'">'
-    : (speaker ? '<div class="msg-portrait" style="display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3)">' + speaker.charAt(0) + '</div>' : '');
+    : (speaker ? '<div class="msg-portrait" style="display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text3);background:' + (CHAR_COLORS[speaker] || 'var(--bg3)') + '33">' + speaker.charAt(0) + '</div>' : '');
 
-  const speakerHtml = speaker ? '<div class="msg-speaker">' + escHtml(speaker) + '</div>' : '';
+  var speakerHtml = speaker ? '<div class="msg-speaker">' + escHtml(speaker) + '</div>' : '';
 
-  let textHtml = '';
+  var textHtml = '';
   if (showZh && p.content_zh) {
     textHtml += '<div class="msg-text">' + formatText(p.content_zh) + '</div>';
     if (showEn && p.content) {
@@ -772,55 +963,17 @@ function passageHtml(p) {
     textHtml += '<div class="msg-text">' + formatText(p.content_zh) + '</div>';
   }
 
-  const pidHtml = showName ? '<span class="msg-pid">#' + p.pid + '</span>' : '';
+  var pidHtml = showPid ? '<span class="msg-pid">#' + p.pid + '</span>' : '';
 
   return '<div class="msg ' + align + '">' +
     portraitHtml +
-    '<div class="msg-bubble">' +
-      speakerHtml + textHtml + pidHtml +
-    '</div>' +
+    '<div class="msg-bubble">' + speakerHtml + textHtml + pidHtml + '</div>' +
   '</div>';
-}
-
-function formatText(s) {
-  if (!s) return '';
-  // Extract <img> tags before escaping, replace with placeholders
-  const imgs = [];
-  let safe = s.replace(/<img\s[^>]*>/gi, m => {
-    const i = imgs.length;
-    // Ensure class and lazy loading
-    let tag = m;
-    if (!/class=/.test(tag)) tag = tag.replace('<img', '<img class="passage-img"');
-    if (!/loading=/.test(tag)) tag = tag.replace('<img', '<img loading="lazy"');
-    imgs.push(tag);
-    return ' IMG' + i + ' ';
-  });
-  // Escape remaining HTML
-  let html = escHtml(safe);
-  // Restore <img> tags from placeholders
-  html = html.replace(/ IMG(\d+) /g, (_, i) => imgs[+i]);
-  // Convert ![img](url) markdown syntax
-  html = html.replace(/!\[img\]\(([^)]+)\)/g, '<img src="$1" class="passage-img" loading="lazy" alt="">');
-  // Convert Twine [img[path]] and [img[path][link]] syntax
-  html = html.replace(/\[img\[([^\]]+?)\](?:\[[^\]]*\])?\]/g, '<img src="$1" class="passage-img" loading="lazy" alt="">');
-  // Convert [image: path] syntax
-  html = html.replace(/\[image:\s*\.?\/?([^\]]+)\]/g, '<img src="$1" class="passage-img" loading="lazy" alt="">');
-  // Convert double newlines to paragraph breaks, single to <br>
-  html = html.replace(/
-
-+/g, '</p><p>').replace(/
-/g, '<br>');
-  return '<p>' + html + '</p>';
-}
-
-function escHtml(s) {
-  if (!s) return '';
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 // === Lightbox ===
 function openLightbox(src) {
-  const lb = document.getElementById('lightbox');
+  var lb = document.getElementById('lightbox');
   document.getElementById('lightboxImg').src = src;
   lb.classList.add('active');
 }
@@ -828,44 +981,60 @@ document.getElementById('lightbox').addEventListener('click', function() {
   this.classList.remove('active');
   document.getElementById('lightboxImg').src = '';
 });
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    document.getElementById('lightbox').classList.remove('active');
-    document.getElementById('lightboxImg').src = '';
-  }
-});
 
-// === Group View ===
-function renderGroupView(passages) {
-  const content = document.getElementById('content');
+// === Group Ordering ===
+function groupPassages(passages) {
+  var groups = new Map();
+  passages.forEach(function(p) {
+    var g = p.group || '(未分類)';
+    if (!groups.has(g)) groups.set(g, []);
+    groups.get(g).push(p);
+  });
+  if (DATA.groups && DATA.groups.length > 0) {
+    var ordered = [];
+    var seen = new Set();
+    DATA.groups.forEach(function(gi) {
+      var key = gi.id || gi.name;
+      if (groups.has(key)) {
+        ordered.push([key, groups.get(key)]);
+        seen.add(key);
+      }
+    });
+    groups.forEach(function(v, k) { if (!seen.has(k)) ordered.push([k, v]); });
+    return ordered;
+  }
+  return Array.from(groups.entries()).sort(function(a, b) { return b[1].length - a[1].length; });
+}
+
+// === Narrative View (group + chapter) ===
+function renderNarrativeView(passages) {
+  var content = document.getElementById('content');
   content.innerHTML = '';
-  const groups = groupPassages(passages);
+  var groups = groupPassages(passages);
 
   if (groups.length === 0) {
     content.innerHTML = '<div class="empty-state">未找到匹配的段落</div>';
     return;
   }
 
-  const gcMap = hasChapters ? buildGroupChapterMap() : {};
-  let lastChapter = -1;
+  var gcMap = hasChapters ? buildGroupChapterMap() : {};
+  var lastChapter = -1;
 
   groups.forEach(function(item) {
-    const gName = item[0];
-    const gPassages = item[1];
+    var gName = item[0];
+    var gPassages = item[1];
 
-    // Insert chapter divider if chapter changed (chapter view mode)
-    if (hasChapters && (currentView === 'chapter' || currentView === 'group')) {
-      const chId = gcMap[gName];
+    // Chapter divider
+    if (hasChapters) {
+      var chId = gcMap[gName];
       if (chId !== undefined && chId !== lastChapter) {
         lastChapter = chId;
-        const ch = DATA.chapters.find(function(c) { return c.id === chId; });
+        var ch = DATA.chapters.find(function(c) { return c.id === chId; });
         if (ch) {
-          // Chapter progress
-          const chGroups = DATA.groups.filter(function(g) { return gcMap[g.id] === chId; });
-          const viewed = chGroups.filter(function(g) { return viewedGroups.has(g.id); }).length;
-          const pct = chGroups.length > 0 ? Math.round(viewed / chGroups.length * 100) : 0;
-
-          const divider = document.createElement('div');
+          var chGroups = DATA.groups.filter(function(g) { return gcMap[g.id] === chId; });
+          var viewed = chGroups.filter(function(g) { return viewedGroups.has(g.id); }).length;
+          var pct = chGroups.length > 0 ? Math.round(viewed / chGroups.length * 100) : 0;
+          var divider = document.createElement('div');
           divider.className = 'chapter-divider';
           divider.id = 'ch-' + chId;
           divider.innerHTML =
@@ -883,42 +1052,142 @@ function renderGroupView(passages) {
       }
     }
 
-    const isOpen = openGroups.has(gName);
-    const gInfo = (DATA.groups || []).find(function(g) { return g.id === gName; });
-    const displayName = gInfo ? (gInfo.name_zh || gInfo.name || gName) : gName;
-    const displayNameEn = gInfo && gInfo.name_zh && gInfo.name !== gInfo.name_zh ? gInfo.name : '';
-    const dialogueCount = gPassages.filter(function(p) { return (p.type || 'dialogue') === 'dialogue'; }).length;
+    renderGroupHeader(content, gName, gPassages);
+  });
+}
 
-    const header = document.createElement('div');
+function renderGroupHeader(container, gName, gPassages) {
+  var isOpen = openSections.has(gName);
+  var gInfo = (DATA.groups || []).find(function(g) { return g.id === gName; });
+  var displayName = gInfo ? (gInfo.name_zh || gInfo.name || gName) : gName;
+  var displayNameEn = gInfo && gInfo.name_zh && gInfo.name !== gInfo.name_zh ? gInfo.name : '';
+  var dialogueCount = gPassages.filter(function(p) { return (p.type || 'dialogue') === 'dialogue'; }).length;
+
+  // Group icon - first 3 chars of cleaned name
+  var iconText = displayName.replace(/^\d+[：:]\s*/, '').substring(0, 2);
+
+  var header = document.createElement('div');
+  header.className = 'group-header';
+  header.innerHTML =
+    '<div class="group-icon">' + escHtml(iconText) + '</div>' +
+    '<span class="group-arrow' + (isOpen ? ' open' : '') + '">&#9654;</span>' +
+    '<div class="group-info">' +
+      '<h2>' + escHtml(displayName) + '</h2>' +
+      (displayNameEn ? '<div class="group-name-en">' + escHtml(displayNameEn) + '</div>' : '') +
+    '</div>' +
+    '<div class="group-stats"><b>' + dialogueCount + '</b> 對話</div>';
+
+  var body = document.createElement('div');
+  body.className = 'group-body' + (isOpen ? ' open' : '');
+
+  header.addEventListener('click', function() {
+    var nowOpen = body.classList.toggle('open');
+    header.querySelector('.group-arrow').classList.toggle('open', nowOpen);
+    if (nowOpen) {
+      openSections.add(gName);
+      markGroupViewed(gName);
+      if (!body.dataset.rendered) {
+        renderPassageChunked(body, gPassages, 0);
+        body.dataset.rendered = '1';
+      }
+    } else {
+      openSections.delete(gName);
+    }
+  });
+
+  if (isOpen && !body.dataset.rendered) {
+    renderPassageChunked(body, gPassages, 0);
+    body.dataset.rendered = '1';
+  }
+
+  container.appendChild(header);
+  container.appendChild(body);
+}
+
+// === Scene View (group -> character sub-sections) ===
+function renderSceneView(passages) {
+  var content = document.getElementById('content');
+  content.innerHTML = '';
+  var groups = groupPassages(passages);
+
+  if (groups.length === 0) {
+    content.innerHTML = '<div class="empty-state">未找到匹配的段落</div>';
+    return;
+  }
+
+  var gcMap = hasChapters ? buildGroupChapterMap() : {};
+  var lastChapter = -1;
+
+  groups.forEach(function(item) {
+    var gName = item[0];
+    var gPassages = item[1];
+
+    // Chapter divider
+    if (hasChapters) {
+      var chId = gcMap[gName];
+      if (chId !== undefined && chId !== lastChapter) {
+        lastChapter = chId;
+        var ch = DATA.chapters.find(function(c) { return c.id === chId; });
+        if (ch) {
+          var divider = document.createElement('div');
+          divider.className = 'chapter-divider';
+          divider.innerHTML =
+            '<span class="chapter-divider-icon">' + (ch.icon || '') + '</span>' +
+            '<div class="chapter-divider-info">' +
+              '<div class="chapter-divider-title">' + escHtml(ch.name) + '</div>' +
+              '<div class="chapter-divider-sub">' + escHtml(ch.name_en || '') + '</div>' +
+            '</div>';
+          content.appendChild(divider);
+        }
+      }
+    }
+
+    var gInfo = (DATA.groups || []).find(function(g) { return g.id === gName; });
+    var displayName = gInfo ? (gInfo.name_zh || gInfo.name || gName) : gName;
+    var isOpen = openSections.has('scene-' + gName);
+
+    // Collect speakers in this group
+    var speakers = {};
+    gPassages.forEach(function(p) {
+      var s = p.speaker_name || '(旁白)';
+      if (!speakers[s]) speakers[s] = [];
+      speakers[s].push(p);
+    });
+    var speakerList = Object.keys(speakers).sort(function(a, b) { return speakers[b].length - speakers[a].length; });
+
+    var iconText = displayName.replace(/^\d+[：:]\s*/, '').substring(0, 2);
+
+    var header = document.createElement('div');
     header.className = 'group-header';
     header.innerHTML =
+      '<div class="group-icon">' + escHtml(iconText) + '</div>' +
       '<span class="group-arrow' + (isOpen ? ' open' : '') + '">&#9654;</span>' +
       '<div class="group-info">' +
         '<h2>' + escHtml(displayName) + '</h2>' +
-        (displayNameEn ? '<div class="group-name-en">' + escHtml(displayNameEn) + '</div>' : '') +
+        '<div class="group-name-en">' + speakerList.length + ' 位角色</div>' +
       '</div>' +
-      '<div class="group-stats"><b>' + dialogueCount + '</b> 對話</div>';
+      '<div class="group-stats"><b>' + gPassages.length + '</b> 段落</div>';
 
-    const body = document.createElement('div');
+    var body = document.createElement('div');
     body.className = 'group-body' + (isOpen ? ' open' : '');
 
     header.addEventListener('click', function() {
-      const nowOpen = body.classList.toggle('open');
+      var nowOpen = body.classList.toggle('open');
       header.querySelector('.group-arrow').classList.toggle('open', nowOpen);
       if (nowOpen) {
-        openGroups.add(gName);
+        openSections.add('scene-' + gName);
         markGroupViewed(gName);
         if (!body.dataset.rendered) {
-          renderPassageChunked(body, gPassages, 0);
+          renderSceneSubs(body, speakers, speakerList);
           body.dataset.rendered = '1';
         }
       } else {
-        openGroups.delete(gName);
+        openSections.delete('scene-' + gName);
       }
     });
 
     if (isOpen && !body.dataset.rendered) {
-      renderPassageChunked(body, gPassages, 0);
+      renderSceneSubs(body, speakers, speakerList);
       body.dataset.rendered = '1';
     }
 
@@ -927,58 +1196,147 @@ function renderGroupView(passages) {
   });
 }
 
-function groupPassages(passages) {
-  const groups = new Map();
-  passages.forEach(function(p) {
-    const g = p.group || '(未分類)';
-    if (!groups.has(g)) groups.set(g, []);
-    groups.get(g).push(p);
-  });
-  if (DATA.groups && DATA.groups.length > 0) {
-    const ordered = [];
-    const seen = new Set();
-    DATA.groups.forEach(function(gi) {
-      const key = gi.id || gi.name;
-      if (groups.has(key)) {
-        ordered.push([key, groups.get(key)]);
-        seen.add(key);
+function renderSceneSubs(container, speakers, speakerList) {
+  speakerList.forEach(function(speaker) {
+    var ps = speakers[speaker];
+    var subKey = 'sub-' + speaker;
+    var isOpen = openSections.has(subKey);
+
+    var sub = document.createElement('div');
+    sub.className = 'scene-sub-section';
+
+    var portrait = ps.find(function(p) { return p.portrait; });
+    var faceHtml = portrait ? '<img class="char-face" src="' + portrait.portrait + '" onerror="this.style.display=\'none\'">' : '';
+    var color = CHAR_COLORS[speaker] || '#64748b';
+
+    var subHeader = document.createElement('div');
+    subHeader.className = 'scene-sub-header';
+    subHeader.innerHTML =
+      faceHtml +
+      '<span style="color:' + color + ';font-weight:600">' + escHtml(speaker) + '</span>' +
+      '<span style="color:var(--text3);font-size:11px">(' + ps.length + ')</span>' +
+      '<span class="group-arrow' + (isOpen ? ' open' : '') + '" style="margin-left:auto">&#9654;</span>';
+
+    var subBody = document.createElement('div');
+    subBody.className = 'scene-sub-body' + (isOpen ? ' open' : '');
+
+    subHeader.addEventListener('click', function() {
+      var nowOpen = subBody.classList.toggle('open');
+      subHeader.querySelector('.group-arrow').classList.toggle('open', nowOpen);
+      if (nowOpen) {
+        openSections.add(subKey);
+        if (!subBody.dataset.rendered) {
+          renderPassageChunked(subBody, ps, 0);
+          subBody.dataset.rendered = '1';
+        }
+      } else {
+        openSections.delete(subKey);
       }
     });
-    groups.forEach(function(v, k) { if (!seen.has(k)) ordered.push([k, v]); });
-    return ordered;
-  }
-  return Array.from(groups.entries()).sort(function(a, b) { return b[1].length - a[1].length; });
+
+    if (isOpen && !subBody.dataset.rendered) {
+      renderPassageChunked(subBody, ps, 0);
+      subBody.dataset.rendered = '1';
+    }
+
+    sub.appendChild(subHeader);
+    sub.appendChild(subBody);
+    container.appendChild(sub);
+  });
 }
 
-// === All View ===
-function renderAllView(passages) {
-  const content = document.getElementById('content');
+// === Character View ===
+function renderCharacterView(passages) {
+  var content = document.getElementById('content');
   content.innerHTML = '';
-  if (passages.length === 0) {
-    content.innerHTML = '<div class="empty-state">未找到匹配的段落</div>';
+
+  // Group passages by speaker
+  var speakerMap = {};
+  passages.forEach(function(p) {
+    var s = p.speaker_name;
+    if (!s) return;
+    if (!speakerMap[s]) speakerMap[s] = [];
+    speakerMap[s].push(p);
+  });
+
+  var speakers = Object.keys(speakerMap)
+    .map(function(name) { return { name: name, passages: speakerMap[name] }; })
+    .sort(function(a, b) { return b.passages.length - a.passages.length; });
+
+  if (speakers.length === 0) {
+    content.innerHTML = '<div class="empty-state">未找到角色對話</div>';
     return;
   }
-  renderPassageChunked(content, passages, 0);
+
+  speakers.forEach(function(sp) {
+    var isOpen = openSections.has('char-' + sp.name);
+    var info = charIndex[sp.name] || {};
+    var color = CHAR_COLORS[sp.name] || '#64748b';
+    var portrait = info.portrait || '';
+
+    var section = document.createElement('div');
+    section.className = 'char-section';
+
+    var header = document.createElement('div');
+    header.className = 'char-section-header';
+
+    var avatarHtml = portrait
+      ? '<img class="char-section-avatar" src="' + portrait + '" onerror="this.style.display=\'none\'">'
+      : '<div class="char-section-avatar-text" style="background:' + color + '">' + sp.name[0] + '</div>';
+
+    header.innerHTML =
+      avatarHtml +
+      '<div class="char-section-info">' +
+        '<h3 style="color:' + color + '">' + escHtml(sp.name) + '</h3>' +
+        '<div class="meta">' + sp.passages.length + ' 句對話</div>' +
+      '</div>' +
+      '<span class="char-section-arrow' + (isOpen ? ' open' : '') + '">&#9654;</span>';
+
+    var body = document.createElement('div');
+    body.className = 'char-section-body' + (isOpen ? ' open' : '');
+
+    header.addEventListener('click', function() {
+      var nowOpen = body.classList.toggle('open');
+      header.querySelector('.char-section-arrow').classList.toggle('open', nowOpen);
+      if (nowOpen) {
+        openSections.add('char-' + sp.name);
+        if (!body.dataset.rendered) {
+          renderPassageChunked(body, sp.passages, 0);
+          body.dataset.rendered = '1';
+        }
+      } else {
+        openSections.delete('char-' + sp.name);
+      }
+    });
+
+    if (isOpen && !body.dataset.rendered) {
+      renderPassageChunked(body, sp.passages, 0);
+      body.dataset.rendered = '1';
+    }
+
+    section.appendChild(header);
+    section.appendChild(body);
+    content.appendChild(section);
+  });
 }
 
 // === Chunked Rendering ===
 function renderPassageChunked(container, passages, startIdx) {
-  const CHUNK = 100;
-  const end = Math.min(startIdx + CHUNK, passages.length);
-  let html = '';
-  for (let i = startIdx; i < end; i++) {
+  var end = Math.min(startIdx + CHUNK_SIZE, passages.length);
+  var html = '';
+  for (var i = startIdx; i < end; i++) {
     html += passageHtml(passages[i]);
   }
   container.insertAdjacentHTML('beforeend', html);
 
   if (end < passages.length) {
-    const sentinel = document.createElement('div');
+    var sentinel = document.createElement('div');
     sentinel.className = 'loading';
     sentinel.style.padding = '20px';
     sentinel.innerHTML = '<div style="font-size:12px;color:var(--text3)">載入更多 (' + end + '/' + passages.length + ')...</div>';
     container.appendChild(sentinel);
 
-    const obs = new IntersectionObserver(function(entries) {
+    var obs = new IntersectionObserver(function(entries) {
       if (entries[0].isIntersecting) {
         obs.disconnect();
         sentinel.remove();
@@ -989,31 +1347,74 @@ function renderPassageChunked(container, passages, startIdx) {
   }
 }
 
-// === Render ===
+// === Render Dispatch ===
 function resetAndRender() {
-  const passages = getFiltered();
-  if (currentView === 'all') {
-    renderAllView(passages);
-  } else {
-    renderGroupView(passages);
+  var passages = getFiltered();
+  if (currentView === 'narrative') {
+    renderNarrativeView(passages);
+  } else if (currentView === 'scene') {
+    renderSceneView(passages);
+  } else if (currentView === 'character') {
+    renderCharacterView(passages);
   }
 }
 
 function setActiveView(view) {
   currentView = view;
+  openSections.clear();
   document.querySelectorAll('.view-btn').forEach(function(b) { b.classList.remove('active'); });
-  var btnId = view === 'group' ? 'viewGroup' : (view === 'chapter' ? 'viewChapter' : 'viewAll');
-  document.getElementById(btnId).classList.add('active');
+  var btnMap = { narrative: 'viewNarrative', scene: 'viewScene', character: 'viewChar' };
+  document.getElementById(btnMap[view]).classList.add('active');
+  updateFilterBar();
   resetAndRender();
 }
+
+// === Keyboard Shortcuts ===
+document.addEventListener('keydown', function(e) {
+  // Ignore if typing in input
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+    if (e.key === 'Escape') {
+      e.target.blur();
+      e.target.value = '';
+      searchQuery = '';
+      resetAndRender();
+    }
+    return;
+  }
+
+  if (e.key === '/') {
+    e.preventDefault();
+    document.getElementById('searchBox').focus();
+  } else if (e.key === '1') {
+    setActiveView('narrative');
+  } else if (e.key === '2') {
+    setActiveView('scene');
+  } else if (e.key === '3') {
+    setActiveView('character');
+  } else if (e.key === 'Escape') {
+    // Close lightbox
+    document.getElementById('lightbox').classList.remove('active');
+    document.getElementById('lightboxImg').src = '';
+    // Clear search
+    if (searchQuery) {
+      searchQuery = '';
+      document.getElementById('searchBox').value = '';
+      resetAndRender();
+    }
+    // Close filter
+    if (charFilter) {
+      charFilter = null;
+      updateFilterBar();
+      resetAndRender();
+    }
+  }
+});
 
 // === Init ===
 function init() {
   renderBanner();
 
-  // Show chapter button if chapters exist
   if (hasChapters) {
-    document.getElementById('viewChapter').style.display = '';
     renderChapterSidebar();
   }
 
@@ -1025,7 +1426,8 @@ function init() {
     if (e.target === this) this.classList.remove('active');
   });
 
-  let searchTimeout;
+  // Search
+  var searchTimeout;
   document.getElementById('searchBox').addEventListener('input', function(e) {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(function() {
@@ -1034,34 +1436,34 @@ function init() {
     }, 300);
   });
 
+  // Toggles
   document.getElementById('showZh').addEventListener('change', function(e) {
     showZh = e.target.checked;
-    clearRenderedCache();
+    openSections.clear();
     resetAndRender();
   });
   document.getElementById('showEn').addEventListener('change', function(e) {
     showEn = e.target.checked;
-    clearRenderedCache();
+    openSections.clear();
     resetAndRender();
   });
-  document.getElementById('showName').addEventListener('change', function(e) {
-    showName = e.target.checked;
-    clearRenderedCache();
+  document.getElementById('showChoices').addEventListener('change', function(e) {
+    showChoices = e.target.checked;
+    openSections.clear();
+    resetAndRender();
+  });
+  document.getElementById('showPid').addEventListener('change', function(e) {
+    showPid = e.target.checked;
+    openSections.clear();
     resetAndRender();
   });
 
-  document.getElementById('viewGroup').addEventListener('click', function() { setActiveView('group'); });
-  document.getElementById('viewChapter').addEventListener('click', function() { setActiveView('chapter'); });
-  document.getElementById('viewAll').addEventListener('click', function() { setActiveView('all'); });
+  // View buttons
+  document.getElementById('viewNarrative').addEventListener('click', function() { setActiveView('narrative'); });
+  document.getElementById('viewScene').addEventListener('click', function() { setActiveView('scene'); });
+  document.getElementById('viewChar').addEventListener('click', function() { setActiveView('character'); });
 
   resetAndRender();
-}
-
-function clearRenderedCache() {
-  openGroups.clear();
-  document.querySelectorAll('.group-body').forEach(function(div) {
-    div.dataset.rendered = '';
-  });
 }
 
 loadData();
